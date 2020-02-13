@@ -1,9 +1,11 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const routes = require("./routes");
 
 const PORT = process.env.PORT || 3000;
 
+// Index file which contains the exercise and workout models
 const db = require("./models");
 
 const app = express();
@@ -17,6 +19,39 @@ app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouttrackerdb", { useNewUrlParser: true });
 
+app.use(routes);
+
+app.get("/", (req, res) => {
+  db.Exercise.find({})
+    .then(exercise => {
+      res.json(exercise);
+    }) 
+    .catch(err => {
+      res.status(500).end();
+    })
+})
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then(workout => {
+      res.json(workout);
+    }) 
+    .catch(err => {
+      res.status(500).end();
+    })
+})
+app.post("/api/workouts", ({ body }, res) => {
+// Creates a new note using req.bod
+  db.Workout.create(body)
+  // Then we take the _id from the newly created workout
+    .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { workouts: _id } }, { new: true }))
+    // Finding first user (one user), then pushing the _id of the newly-created workout to the user's workouts array
+    .then(dbUser => {
+      res.json(dbUser);
+    })
+    .catch(err => {
+      res.json(err);
+    })
+});
 // db.User.create({ name: "Ernest Hemingway" })
 //   .then(dbUser => {
 //     console.log(dbUser);
