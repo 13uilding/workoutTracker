@@ -1,6 +1,6 @@
 let mongoose = require("mongoose");
 // This doesn't point to any real file yet
-let db = require("./models");
+let db = require("../models");
 // Connects to localhost/workout with the options
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,

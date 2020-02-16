@@ -1,7 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const routes = require("./routes");
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,19 +16,42 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouttrackerdb", { useNewUrlParser: true });
+// const databaseUrl = "workoutsdb";
+// const collections = ["workouts", "exercise"];
 
-app.use(routes);
+// const db = mongojs(databaseUrl, collections);
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouttrackerdb", { useNewUrlParser: true });
 
 app.get("/", (req, res) => {
-  db.Exercise.find({})
-    .then(exercise => {
-      res.json(exercise);
+  db.Workout.find({})
+    .then(workout => {
+      res.json(workout);
     }) 
     .catch(err => {
       res.status(500).end();
     })
 })
+app.get("/exercise", (req, res) => {
+  db.Workout.find({})
+    .then(workout => {
+      res.json(workout);
+    }) 
+    .catch(err => {
+      res.status(500).end();
+    })
+})
+app.get("/exercise?", (req, res) => {
+  db.Workout.find({})
+    .then(workout => {
+      res.json(workout);
+    }) 
+    .catch(err => {
+      res.status(500).end();
+    })
+})
+
+
+// Api routes
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
     .then(workout => {
