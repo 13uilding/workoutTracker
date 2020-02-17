@@ -20,7 +20,7 @@ app.use(express.static("public"));
 // const collections = ["workouts", "exercise"];
 
 // const db = mongojs(databaseUrl, collections);
-// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouttrackerdb", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 // app.get("/", function(req, res) {
 //   res.sendFile(path.join(__dirname, "view.html"));
