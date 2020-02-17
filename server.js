@@ -22,6 +22,11 @@ app.use(express.static("public"));
 // const db = mongojs(databaseUrl, collections);
 // mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouttrackerdb", { useNewUrlParser: true });
 
+// app.get("/", function(req, res) {
+//   res.sendFile(path.join(__dirname, "view.html"));
+// });
+
+
 app.get("/", (req, res) => {
   db.Workout.find({})
     .then(workout => {
@@ -40,8 +45,9 @@ app.get("/exercise", (req, res) => {
       res.status(500).end();
     })
 })
+// I want to sort by id and find the last id
 app.get("/exercise?", (req, res) => {
-  db.Workout.find({})
+  db.Workout.find().sort({_id})
     .then(workout => {
       res.json(workout);
     }) 
